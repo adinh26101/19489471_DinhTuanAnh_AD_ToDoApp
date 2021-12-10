@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="#1D46DF">
+
+    <TextView
+        android:id="@+id/textviewThem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Add Task"
+        android:textColor="#ff00"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editTextTenCV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textviewThem"
+        android:layout_marginTop="10dp"
+        android:hint="Input Name Task"
+        android:textColorHint="#04F10E"
+        android:minHeight="48dp" />
+
+    <Button
+        android:id="@+id/buttonThem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTenCV"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:text="Save" />
+
+    <Button
+        android:id="@+id/buttonHuy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTenCV"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/buttonThem"
+        android:text="Cancel" />
+</RelativeLayout>
