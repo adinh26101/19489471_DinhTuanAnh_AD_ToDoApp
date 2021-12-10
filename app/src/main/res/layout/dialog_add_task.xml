@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="#1D46DF">
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/textviewThem"
@@ -12,7 +12,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="Add Task"
-        android:textColor="#ff00"
+        android:textColor="#000000"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -23,7 +23,7 @@
         android:layout_below="@+id/textviewThem"
         android:layout_marginTop="10dp"
         android:hint="Input Name Task"
-        android:textColorHint="#04F10E"
+        android:textColorHint="#000000"
         android:minHeight="48dp" />
 
     <Button
@@ -40,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextTenCV"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="103dp"
+        android:layout_marginTop="22dp"
         android:layout_toRightOf="@id/buttonThem"
         android:text="Cancel" />
 </RelativeLayout>

@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lvCongViec = (ListView) findViewById(R.id.listviewCongViec);
+        lvCongViec = (ListView) findViewById(R.id.listTask);
         arrayCongViec = new ArrayList<>();
 
         adapter = new CongViecAdapter(MainActivity.this, R.layout.row_task, arrayCongViec);
