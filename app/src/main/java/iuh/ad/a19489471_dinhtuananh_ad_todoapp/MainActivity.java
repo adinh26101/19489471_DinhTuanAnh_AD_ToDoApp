@@ -22,45 +22,42 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     DataBase dataBase;
-    ListView lvCongViec;
-    ArrayList<CongViec> arrayCongViec;
-    CongViecAdapter adapter;
+    ListView lvTask;
+    ArrayList<Task> arrayTask;
+    TaskAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lvCongViec = (ListView) findViewById(R.id.listTask);
-        arrayCongViec = new ArrayList<>();
+        lvTask = (ListView) findViewById(R.id.listTask);
+        arrayTask = new ArrayList<>();
 
-        adapter = new CongViecAdapter(MainActivity.this, R.layout.row_task, arrayCongViec);
-        lvCongViec.setAdapter(adapter);
+        adapter = new TaskAdapter(MainActivity.this, R.layout.row_task, arrayTask);
+        lvTask.setAdapter(adapter);
 
-        dataBase = new DataBase(MainActivity.this, "ghichu.sqlite", null, 1);
+        dataBase = new DataBase(MainActivity.this, "note.sqlite", null, 1);
 
-        dataBase.QueryData("CREATE TABLE IF NOT EXISTS CongViec(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenCV VARCHAR(200))");
-
-        dataBase.QueryData("INSERT INTO CongViec VALUES (null, 'Do homework')");
-        dataBase.QueryData("INSERT INTO CongViec VALUES (null, 'Write note')");
+        dataBase.QueryData("CREATE TABLE IF NOT EXISTS Task(Id INTEGER PRIMARY KEY AUTOINCREMENT, NameTask VARCHAR(200))");
 
         GetDataCongViec();
     }
 
-    public void DialogDeleteCongViec(String tenCV, int id){
+    public void DialogDeleteTask(String tenCV, int id){
         AlertDialog.Builder dialogDelete = new AlertDialog.Builder(MainActivity.this);
-        dialogDelete.setMessage("Bạn có muốn xóa công việc " + tenCV + "không?");
+        dialogDelete.setMessage("do you want to delete this task?");
 
-        dialogDelete.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+        dialogDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dataBase.QueryData("DELETE FROM CongViec WHERE Id = '"+ id +"'");
-                Toast.makeText(MainActivity.this, "Đã xóa" + tenCV, Toast.LENGTH_SHORT).show();
+                dataBase.QueryData("DELETE FROM Task WHERE Id = '"+ id +"'");
+                Toast.makeText(MainActivity.this, "deleted" + tenCV, Toast.LENGTH_SHORT).show();
                 GetDataCongViec();
             }
         });
 
-        dialogDelete.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+        dialogDelete.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -70,14 +67,14 @@ public class MainActivity extends AppCompatActivity {
         dialogDelete.show();
     }
 
-    public void DialogEditCongViec(String ten, int id){
+    public void DialogEditTask(String ten, int id){
         Dialog dialog= new Dialog(MainActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);// Để loại bỏ dòng title
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_edit_task);
 
-        EditText edtNameEdit = (EditText) dialog.findViewById(R.id.editTextTenCVEdit);
-        Button btnXacNhanEdit = (Button) dialog.findViewById(R.id.buttonXacNhanEdit);
-        Button btnHuyEdit = (Button) dialog.findViewById(R.id.buttonHuyEdit);
+        EditText edtNameEdit = (EditText) dialog.findViewById(R.id.editTaskName);
+        Button btnXacNhanEdit = (Button) dialog.findViewById(R.id.saveEditBtn);
+        Button btnHuyEdit = (Button) dialog.findViewById(R.id.cancelEditBtn);
 
         edtNameEdit.setText(ten);
 
@@ -85,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String tenMoi = edtNameEdit.getText().toString().trim();
-                dataBase.QueryData("UPDATE CongViec SET TenCV = '"+ tenMoi +"' WHERE Id = '"+ id +"'");
-                Toast.makeText(MainActivity.this, "Đã cập nhật", Toast.LENGTH_SHORT).show();
+                dataBase.QueryData("UPDATE Task SET NameTask = '"+ tenMoi +"' WHERE Id = '"+ id +"'");
+                Toast.makeText(MainActivity.this, "updated", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 GetDataCongViec();
             }
@@ -104,12 +101,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void GetDataCongViec(){
 
-        Cursor dataCongViec = dataBase.GetData("SELECT * FROM CongViec");
-        arrayCongViec.clear();
-        while (dataCongViec.moveToNext()){
-            String name = dataCongViec.getString(1);
-            int id = dataCongViec.getInt(0);
-            arrayCongViec.add(new CongViec(id, name));
+        Cursor dataTask = dataBase.GetData("SELECT * FROM Task");
+        arrayTask.clear();
+        while (dataTask.moveToNext()){
+            String name = dataTask.getString(1);
+            int id = dataTask.getInt(0);
+            arrayTask.add(new Task(id, name));
         }
         adapter.notifyDataSetChanged();
     }
@@ -135,26 +132,26 @@ public class MainActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_add_task);
 
-        EditText edtName = (EditText) dialog.findViewById(R.id.editTextTenCV);
-        Button btnThem = (Button) dialog.findViewById(R.id.buttonThem);
-        Button btnHuy = (Button) dialog.findViewById(R.id.buttonHuy);
+        EditText edtName = (EditText) dialog.findViewById(R.id.editTextTaskName);
+        Button btnAdd = (Button) dialog.findViewById(R.id.saveBtn);
+        Button btnCancel = (Button) dialog.findViewById(R.id.cancelBtn);
 
-        btnThem.setOnClickListener(new View.OnClickListener() {
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tencv = edtName.getText().toString();
-                if (tencv.equals("")){
-                    Toast.makeText(MainActivity.this, "Vui lòng nhập tên công việc!", Toast.LENGTH_SHORT).show();
+                String nameTask = edtName.getText().toString();
+                if (nameTask.equals("")){
+                    Toast.makeText(MainActivity.this, "input task!", Toast.LENGTH_SHORT).show();
                 }else {
-                    dataBase.QueryData("INSERT INTO CongViec VALUES (null, '"+ tencv +"')");
-                    Toast.makeText(MainActivity.this, "Đã thêm", Toast.LENGTH_SHORT).show();
+                    dataBase.QueryData("INSERT INTO Task VALUES (null, '"+ nameTask +"')");
+                    Toast.makeText(MainActivity.this, "added", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     GetDataCongViec();
                 }
             }
         });
 
-        btnHuy.setOnClickListener(new View.OnClickListener() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();

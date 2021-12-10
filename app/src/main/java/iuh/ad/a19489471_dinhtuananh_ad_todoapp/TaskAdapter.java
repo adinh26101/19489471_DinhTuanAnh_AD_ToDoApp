@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CongViecAdapter extends BaseAdapter {
+public class TaskAdapter extends BaseAdapter {
 
     private MainActivity context;
     private int layout;
-    private List<CongViec> TaskList;
+    private List<Task> TaskList;
 
-    public CongViecAdapter(MainActivity context, int layout, List<CongViec> TaskList) {
+    public TaskAdapter(MainActivity context, int layout, List<Task> TaskList) {
         this.context = context;
         this.layout = layout;
         this.TaskList = TaskList;
@@ -50,7 +50,7 @@ public class CongViecAdapter extends BaseAdapter {
             holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layout, null);
-            holder.txtName = (TextView) convertView.findViewById(R.id.textviewName);
+            holder.txtName = (TextView) convertView.findViewById(R.id.taskName);
             holder.imgDelete = (ImageView) convertView.findViewById(R.id.imageviewDelete);
             holder.imgEdit = (ImageView) convertView.findViewById(R.id.imageviewEdit);
             convertView.setTag(holder);
@@ -58,15 +58,15 @@ public class CongViecAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        CongViec congViec = TaskList.get(position);
+        Task task = TaskList.get(position);
 
-        holder.txtName.setText(congViec.getTenCV());
+        holder.txtName.setText(task.getNameTask());
 
 
         holder.imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.DialogEditCongViec(congViec.getTenCV(), congViec.getIdCV());
+                context.DialogEditTask(task.getNameTask(), task.getId());
             }
         });
 
@@ -74,7 +74,7 @@ public class CongViecAdapter extends BaseAdapter {
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.DialogDeleteCongViec(congViec.getTenCV(), congViec.getIdCV());
+                context.DialogDeleteTask(task.getNameTask(), task.getId());
             }
         });
         return convertView;
