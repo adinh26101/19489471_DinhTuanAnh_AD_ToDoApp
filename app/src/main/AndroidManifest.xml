@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="iuh.ad.a19489471_dinhtuananh_ad_todoapp">
+    package="iuh.ad.a19489471_dinhtuananh">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -8,9 +9,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.19489471_DinhTuanAnh_AD_ToDoApp">
+        android:theme="@style/Theme.19489471_DinhTuanAnh">
+
         <activity
             android:name=".MainActivity"
+            android:exported="false">
+        </activity>
+
+        <activity
+            android:name=".views.AccountActivity"
+            android:exported="false">
+        </activity>
+
+        <activity
+            android:name=".views.CreateAccountActivity"
+            android:exported="false">
+        </activity>
+
+        <activity
+            android:name=".views.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:100902627803:android:9cb09ec2356d4fa70edffe",
+        "android_client_info": {
+          "package_name": "iuh.ad.a19489471_dinhtuananh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "100902627803-8lfq41s4cjet9vn12qlq7drp3ce0tnn2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8L-aE51qXAX_RBDEFwdFEmkzFs4PQO_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100902627803-8lfq41s4cjet9vn12qlq7drp3ce0tnn2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:100902627803:android:2b72c04bfe33d4240edffe",
         "android_client_info": {
           "package_name": "iuh.ad.a19489471_dinhtuananh_ad_todoapp"

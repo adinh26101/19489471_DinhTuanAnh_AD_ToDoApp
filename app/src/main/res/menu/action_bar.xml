@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/accountBtn"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="account"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/modifyBtn"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="modify"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/deleteBtn"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="delete"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/tickBtn"
+        android:icon="@android:drawable/checkbox_on_background"
+        android:title="tick"
+        app:showAsAction="always" />
+</menu>

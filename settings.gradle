@@ -6,5 +6,5 @@ dependencyResolutionManagement {
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
-rootProject.name = "19489471_DinhTuanAnh_AD_ToDoApp"
+rootProject.name = "19489471_Dinh Tuan Anh"
 include ':app'
