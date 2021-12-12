@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseUser
 import iuh.ad.a19489471_dinhtuananh.MainActivity
 import iuh.ad.a19489471_dinhtuananh.R
 import iuh.ad.a19489471_dinhtuananh.extensions.Extensions.toast
@@ -29,6 +30,15 @@ class SignInActivity : AppCompatActivity() {
 
         btnSignIn.setOnClickListener {
             signInUser()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val user: FirebaseUser? = firebaseAuth.currentUser
+        user?.let {
+            startActivity(Intent(this, MainActivity::class.java))
+            toast("welcome back")
         }
     }
 

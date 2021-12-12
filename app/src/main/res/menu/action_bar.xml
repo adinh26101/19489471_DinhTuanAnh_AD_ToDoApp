@@ -7,4 +7,19 @@
         android:icon="@drawable/ic_launcher_foreground"
         android:title="account"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/modifyBtn"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="modify"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/deleteBtn"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="delete"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/doneBtn"
+        android:icon="?android:attr/textCheckMark"
+        android:title="done"
+        app:showAsAction="always" />
 </menu>

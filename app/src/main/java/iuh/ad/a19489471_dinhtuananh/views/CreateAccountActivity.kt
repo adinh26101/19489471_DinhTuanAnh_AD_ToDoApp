@@ -35,17 +35,6 @@ class CreateAccountActivity : AppCompatActivity() {
         }
     }
 
-    /* check if there's a signed-in user*/
-
-    override fun onStart() {
-        super.onStart()
-        val user: FirebaseUser? = firebaseAuth.currentUser
-        user?.let {
-            startActivity(Intent(this, MainActivity::class.java))
-            toast("welcome back")
-        }
-    }
-
     private fun notEmpty(): Boolean = etEmail.text.toString().trim().isNotEmpty() &&
             etName.text.toString().trim().isNotEmpty() &&
             etPassword.text.toString().trim().isNotEmpty() &&

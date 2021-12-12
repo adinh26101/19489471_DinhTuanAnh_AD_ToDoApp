@@ -29,33 +29,6 @@
             android:layout_margin="10dp"
             android:text="desc task" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-            <ImageButton
-                android:id="@+id/modifyBtn"
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:src="@android:drawable/ic_menu_edit"
-                android:layout_gravity="center" />
-
-            <ImageButton
-                android:id="@+id/deleteBtn"
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:src="@android:drawable/ic_menu_delete"
-                android:layout_gravity="center" />
-
-            <ImageButton
-                android:id="@+id/tickBtn"
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:src="@android:drawable/checkbox_on_background"
-                android:layout_gravity="center"/>
-
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
