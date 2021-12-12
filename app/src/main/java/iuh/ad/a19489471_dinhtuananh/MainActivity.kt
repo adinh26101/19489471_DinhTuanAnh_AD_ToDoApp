@@ -113,7 +113,13 @@ class MainActivity : AppCompatActivity() {
                         val task = taskSnapshot.getValue(Task::class.java)
                         taskArrayList.add(task!!)
                     }
-                    taskRecyclerview.adapter = MyAdapter(taskArrayList)
+                    var adapter = MyAdapter(taskArrayList)
+                    taskRecyclerview.adapter = adapter
+                    adapter.setOnItemClickListener(object : MyAdapter.onItemClickListener{
+                        override fun onItemClick(position: Int) {
+                            toast("${taskArrayList[position].task}")
+                        }
+                    })
                 }
             }
             override fun onCancelled(error: DatabaseError) {
