@@ -1,5 +1,6 @@
 package iuh.ad.a19489471_dinhtuananh.views
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -15,17 +16,15 @@ import android.view.animation.ScaleAnimation
 
 
 
-
 class MyAdapter(private val taskList : ArrayList<Task>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     private var lastPosition = -1
-    var row_index = -1
-    private lateinit var Listener: onItemClickListener
+    private lateinit var Listener: OnItemClickListener
 
-    interface onItemClickListener {
-        fun onItemClick(position: Int)
+    interface OnItemClickListener {
+        fun onItemClick(position: Int) {}
     }
 
-    fun setOnItemClickListener(listener: onItemClickListener) {
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         Listener = listener
     }
 
@@ -36,23 +35,19 @@ class MyAdapter(private val taskList : ArrayList<Task>) : RecyclerView.Adapter<M
         return MyViewHolder(itemView, Listener)
 
     }
-
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         val currentitem = taskList[position]
 
         holder.nametask.text = currentitem.task
         holder.descTask.text = currentitem.description
+        holder.deadlineTask.text = currentitem.deadline
 
-        holder.linearLayout.setOnClickListener(View.OnClickListener {
-            row_index = position
-            notifyDataSetChanged()
-        })
-
-        if (row_index === position) {
-            holder.linearLayout.setBackgroundColor(Color.parseColor("#adffc5"))
+        if (currentitem.status == "done") {
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#878787"))
         } else {
-            holder.linearLayout.setBackgroundColor(Color.parseColor("#87c498"))
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#9cffde"))
         }
 
 
@@ -65,10 +60,11 @@ class MyAdapter(private val taskList : ArrayList<Task>) : RecyclerView.Adapter<M
     }
 
 
-    class MyViewHolder(itemView : View, listener : onItemClickListener) : RecyclerView.ViewHolder(itemView){
+    class MyViewHolder(itemView : View, listener : OnItemClickListener) : RecyclerView.ViewHolder(itemView){
 
         val nametask : TextView = itemView.findViewById(R.id.nameTask)
         val descTask : TextView = itemView.findViewById(R.id.descTask)
+        val deadlineTask: TextView = itemView.findViewById(R.id.deadlineTask)
         val linearLayout: LinearLayout = itemView.findViewById(R.id.LinearLayout)
 
         init {

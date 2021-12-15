@@ -19,7 +19,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/doneBtn"
-        android:icon="?android:attr/textCheckMark"
+        android:icon="@android:drawable/checkbox_on_background"
         android:title="done"
         app:showAsAction="always" />
 </menu>
