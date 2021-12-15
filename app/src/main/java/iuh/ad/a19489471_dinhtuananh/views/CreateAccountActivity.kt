@@ -6,6 +6,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.FirebaseDatabase
 import iuh.ad.a19489471_dinhtuananh.MainActivity
 import iuh.ad.a19489471_dinhtuananh.R
 import iuh.ad.a19489471_dinhtuananh.extensions.Extensions.toast
@@ -73,6 +74,7 @@ class CreateAccountActivity : AppCompatActivity() {
                         val profileUpdates = userProfileChangeRequest { displayName = userName }
                         firebaseAuth.currentUser!!.updateProfile(profileUpdates)
                         sendEmailVerification()
+                        FirebaseDatabase.getInstance().getReference("$userName/status").setValue("ok")
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()
                     } else {

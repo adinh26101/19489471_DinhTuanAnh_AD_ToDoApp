@@ -30,7 +30,6 @@ import com.google.android.material.datepicker.MaterialDatePicker.Builder.datePic
 
 class MainActivity : AppCompatActivity() {
     private lateinit var userData : DatabaseReference
-    private val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
     val database = FirebaseDatabase.getInstance()
     private var itemClicked: String = ""
 
@@ -65,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         R.id.deleteBtn -> {
             delete()
             itemClicked = ""
+            finish()
             true
         }
         R.id.doneBtn -> {
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
         val database = FirebaseDatabase.getInstance()
 
-        val removeTask = database.getReference("$author/$itemClicked")
+        val removeTask = database.getReference("$author/task/$itemClicked")
 
         removeTask.removeValue()
         toast("deleted $itemClicked")
@@ -87,6 +87,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun DialogAdd() {
+        val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
         val dialog = Dialog(this@MainActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_add)
@@ -96,36 +97,63 @@ class MainActivity : AppCompatActivity() {
         val addBtn = dialog.findViewById<View>(R.id.addBtn) as Button
         val calcelBtn = dialog.findViewById<View>(R.id.cancelBtn) as Button
 
+        val taskName: String = edtAddTask.text.toString()
+
         edtDeadline.minDate = System.currentTimeMillis()
 
-        addBtn.setOnClickListener {
-            val taskName: String = edtAddTask.text.toString()
-            val taskDesc: String = edtAddDesc.text.toString()
+        var check = true
+        userData = FirebaseDatabase.getInstance().getReference("$author/task/")
+        userData.child("")
+            .orderByChild("deadline")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (taskSnapshot in snapshot.children) {
+                            val task = taskSnapshot.getValue(Task::class.java)
+                            if(task?.task == taskName){
+                                check = false
+                            }
+                        }
+                    }
+                }
 
-            val year: Int = edtDeadline.year
-            val month: Int = edtDeadline.month
-            val day: Int = edtDeadline.dayOfMonth
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
 
-            val deadline = "$year-$month-$day"
+        if(check){
+            addBtn.setOnClickListener {
+                val taskName: String = edtAddTask.text.toString()
+                val taskDesc: String = edtAddDesc.text.toString()
+                val year: Int = edtDeadline.year
+                val month: Int = edtDeadline.month
+                val day: Int = edtDeadline.dayOfMonth
 
-            if (taskName == "") {
-                toast("input task!")
-            } else {
+                val deadline = "$year-$month-$day"
 
+                if (taskName == "") {
+                    toast("input task!")
+                } else {
 
-                val setTaskName = database.getReference("$author/$taskName/task")
-                val setTaskDesc = database.getReference("$author/$taskName/description")
-                val setStatus = database.getReference("$author/$taskName/status")
-                val setDeadline = database.getReference("$author/$taskName/deadline")
+                    val setTaskName = database.getReference("$author/task/$taskName/task")
+                    val setTaskDesc = database.getReference("$author/task/$taskName/description")
+                    val setStatus = database.getReference("$author/task/$taskName/status")
+                    val setDeadline = database.getReference("$author/task/$taskName/deadline")
 
-                setTaskName.setValue(taskName)
-                setTaskDesc.setValue(taskDesc)
-                setStatus.setValue("todo")
-                setDeadline.setValue(deadline)
+                    setTaskName.setValue(taskName)
+                    setTaskDesc.setValue(taskDesc)
+                    setStatus.setValue("todo")
+                    setDeadline.setValue(deadline)
 
-                toast("added")
-                dialog.dismiss()
-                getUserData()
+                    toast("added")
+                    dialog.dismiss()
+                    getUserData()
+                }
+            }
+        }else{
+            addBtn.setOnClickListener(){
+                toast("task existing")
             }
         }
         calcelBtn.setOnClickListener { dialog.dismiss() }
@@ -133,11 +161,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun done() {
+        val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
         if(itemClicked == ""){
             toast("select task to set status")
         }
         else{
-            val doneStatus = database.getReference("$author/$itemClicked/status")
+            val doneStatus = database.getReference("$author/task/$itemClicked/status")
             doneStatus.setValue("done")
             getUserData()
             toast("done $itemClicked")
@@ -147,6 +176,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private fun DialogModify() {
+        val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
         if(itemClicked == ""){
             toast("select task to edit")
         }
@@ -165,10 +195,10 @@ class MainActivity : AppCompatActivity() {
 
             edtDeadline.minDate = System.currentTimeMillis()
 
-            val modifyTaskName = database.getReference("$author/$itemClicked/task")
-            val modifyTaskDesc = database.getReference("$author/$itemClicked/description")
-            val modifyStatus = database.getReference("$author/$itemClicked/status")
-            val modifyDeadline = database.getReference("$author/$itemClicked/deadline")
+            val modifyTaskName = database.getReference("$author/task/$itemClicked/task")
+            val modifyTaskDesc = database.getReference("$author/task/$itemClicked/description")
+            val modifyStatus = database.getReference("$author/task/$itemClicked/status")
+            val modifyDeadline = database.getReference("$author/task/$itemClicked/deadline")
 
             edtmodifyTask.text = itemClicked.toEditable()
             modifyTaskDesc.get().addOnSuccessListener {
@@ -180,36 +210,65 @@ class MainActivity : AppCompatActivity() {
                     edtStatus.isChecked = true
                 }
             }
+            val taskName: String = edtmodifyTask.text.toString()
+            val taskDesc: String = edtmodifyDesc.text.toString()
 
-            modifyBtn.setOnClickListener {
-                val taskName: String = edtmodifyTask.text.toString()
-                val taskDesc: String = edtmodifyDesc.text.toString()
+            var check = true
+            userData = FirebaseDatabase.getInstance().getReference("$author/task/")
+            userData.child("")
+                .orderByChild("deadline")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            for (taskSnapshot in snapshot.children) {
+                                val task = taskSnapshot.getValue(Task::class.java)
+                                if(task?.task == taskName){
+                                    check = false
+                                }
+                            }
+                        }
+                    }
 
-                val year: Int = edtDeadline.year
-                val month: Int = edtDeadline.month
-                val day: Int = edtDeadline.dayOfMonth
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
 
-                val deadline = "$year-$month-$day"
+            if(check){
+                modifyBtn.setOnClickListener {
+                    val taskName: String = edtmodifyTask.text.toString()
+                    val taskDesc: String = edtmodifyDesc.text.toString()
+                    val year: Int = edtDeadline.year
+                    val month: Int = edtDeadline.month
+                    val day: Int = edtDeadline.dayOfMonth
 
-                var status = "todo"
-                if (edtStatus.isChecked) {
-                    status = "done"
+                    val deadline = "$year-$month-$day"
+
+                    var status = "todo"
+                    if (edtStatus.isChecked) {
+                        status = "done"
+                    }
+
+                    if (taskName == "") {
+                        toast("input task!")
+                    } else {
+
+                        modifyTaskName.setValue(taskName)
+                        modifyTaskDesc.setValue(taskDesc)
+                        modifyStatus.setValue(status)
+                        modifyDeadline.setValue(deadline)
+
+                        toast("modify successful")
+                        dialog.dismiss()
+                        getUserData()
+                    }
                 }
-
-                if (taskName == "") {
-                    toast("input task!")
-                } else {
-
-                    modifyTaskName.setValue(taskName)
-                    modifyTaskDesc.setValue(taskDesc)
-                    modifyStatus.setValue(status)
-                    modifyDeadline.setValue(deadline)
-
-                    toast("modify successful")
-                    dialog.dismiss()
-                    getUserData()
+            }else{
+                modifyBtn.setOnClickListener(){
+                    toast("task existing")
                 }
             }
+
             calcelBtn.setOnClickListener { dialog.dismiss() }
             dialog.show()
         }
@@ -224,7 +283,7 @@ class MainActivity : AppCompatActivity() {
         val taskArrayList = arrayListOf<Task>()
 
         val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
-        userData = FirebaseDatabase.getInstance().getReference("$author")
+        userData = FirebaseDatabase.getInstance().getReference("$author/task/")
 
         userData.child("")
             .orderByChild("deadline")
