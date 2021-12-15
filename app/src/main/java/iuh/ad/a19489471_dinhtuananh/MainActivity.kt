@@ -98,16 +98,15 @@ class MainActivity : AppCompatActivity() {
 
         edtDeadline.minDate = System.currentTimeMillis()
 
-        val taskName: String = edtAddTask.text.toString()
-        val taskDesc: String = edtAddDesc.text.toString()
-
-        val year: Int = edtDeadline.year
-        val month: Int = edtDeadline.month
-        val day: Int = edtDeadline.dayOfMonth
-
-        val deadline = "$year-$month-$day"
-
         addBtn.setOnClickListener {
+            val taskName: String = edtAddTask.text.toString()
+            val taskDesc: String = edtAddDesc.text.toString()
+
+            val year: Int = edtDeadline.year
+            val month: Int = edtDeadline.month
+            val day: Int = edtDeadline.dayOfMonth
+
+            val deadline = "$year-$month-$day"
 
             if (taskName == "") {
                 toast("input task!")
@@ -182,19 +181,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            val taskName: String = edtmodifyTask.text.toString()
-            val taskDesc: String = edtmodifyDesc.text.toString()
-
-            val year: Int = edtDeadline.year
-            val month: Int = edtDeadline.month
-            val day: Int = edtDeadline.dayOfMonth
-
-            val deadline = "$year-$month-$day"
-
-            var status = "todo"
-
             modifyBtn.setOnClickListener {
+                val taskName: String = edtmodifyTask.text.toString()
+                val taskDesc: String = edtmodifyDesc.text.toString()
 
+                val year: Int = edtDeadline.year
+                val month: Int = edtDeadline.month
+                val day: Int = edtDeadline.dayOfMonth
+
+                val deadline = "$year-$month-$day"
+
+                var status = "todo"
                 if (edtStatus.isChecked) {
                     status = "done"
                 }
