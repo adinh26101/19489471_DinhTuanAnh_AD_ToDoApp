@@ -64,6 +64,7 @@ class TaskActivity : AppCompatActivity() {
         R.id.deleteBtn -> {
             delete()
             itemClicked = ""
+            finish()
             true
         }
         R.id.doneBtn -> {
