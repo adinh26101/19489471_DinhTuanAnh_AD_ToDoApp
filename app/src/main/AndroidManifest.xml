@@ -17,6 +17,11 @@
         </activity>
 
         <activity
+            android:name=".TaskActivity"
+            android:exported="false">
+        </activity>
+
+        <activity
             android:name=".views.AccountActivity"
             android:exported="false">
         </activity>

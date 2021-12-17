@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import iuh.ad.a19489471_dinhtuananh.MainActivity
+import iuh.ad.a19489471_dinhtuananh.TaskActivity
 import iuh.ad.a19489471_dinhtuananh.R
 import iuh.ad.a19489471_dinhtuananh.extensions.Extensions.toast
 import iuh.ad.a19489471_dinhtuananh.utils.FirebaseUtils.firebaseAuth
@@ -31,7 +31,7 @@ class AccountActivity : AppCompatActivity() {
         }
 
         homeBtn.setOnClickListener{
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, TaskActivity::class.java))
             toast("home")
             finish()
         }
