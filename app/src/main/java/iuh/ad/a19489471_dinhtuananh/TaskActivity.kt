@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -22,6 +23,7 @@ import iuh.ad.a19489471_dinhtuananh.utils.FirebaseUtils
 import java.util.*
 import com.google.firebase.database.*
 import iuh.ad.a19489471_dinhtuananh.data.Task
+import iuh.ad.a19489471_dinhtuananh.views.CreateAccountActivity
 import iuh.ad.a19489471_dinhtuananh.views.MyAdapter
 
 
@@ -30,7 +32,7 @@ class TaskActivity : AppCompatActivity() {
     val database = FirebaseDatabase.getInstance()
     var taskCurrentList = arrayListOf<String>()
 
-    private var itemClicked: String = ""
+    private lateinit var itemClicked: String
     private var last_position: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +66,7 @@ class TaskActivity : AppCompatActivity() {
         R.id.deleteBtn -> {
             delete()
             itemClicked = ""
-            finish()
+            startActivity(Intent(this, TaskActivity::class.java))
             true
         }
         R.id.doneBtn -> {
@@ -174,6 +176,8 @@ class TaskActivity : AppCompatActivity() {
             val modifyStatus = database.getReference("$author/task/$itemClicked/status")
             val modifyDeadline = database.getReference("$author/task/$itemClicked/deadline")
 
+            val tmp: String = itemClicked
+
             edtmodifyTask.text = itemClicked.toEditable()
             modifyTaskDesc.get().addOnSuccessListener {
                 edtmodifyDesc.text = it.value.toString().toEditable()
@@ -202,19 +206,17 @@ class TaskActivity : AppCompatActivity() {
 
                 if (taskName == "") {
                     toast("input task!")
+                } else if (taskName!=tmp && taskCurrentList.contains(taskName)){
+                    toast("task existing!")
                 } else {
-                    if (taskCurrentList.contains(taskName)){
-                        toast("task existing!")
-                    } else {
-                        modifyTaskName.setValue(taskName)
-                        modifyTaskDesc.setValue(taskDesc)
-                        modifyStatus.setValue(status)
-                        modifyDeadline.setValue(deadline)
+                    modifyTaskName.setValue(taskName)
+                    modifyTaskDesc.setValue(taskDesc)
+                    modifyStatus.setValue(status)
+                    modifyDeadline.setValue(deadline)
 
-                        toast("modify successful")
-                        dialog.dismiss()
-                        getUserData()
-                    }
+                    toast("modify successful")
+                    dialog.dismiss()
+                    getUserData()
                 }
             }
 
@@ -253,6 +255,7 @@ class TaskActivity : AppCompatActivity() {
                             taskRecyclerview.findViewHolderForAdapterPosition(last_position)?.itemView?.setBackgroundColor(Color.parseColor("#ffffff"))
                             taskRecyclerview.findViewHolderForAdapterPosition(position)?.itemView?.setBackgroundColor(Color.parseColor("#00ffaa"))
                             last_position = position
+                            toast(itemClicked)
                         }
                     })
                 }
