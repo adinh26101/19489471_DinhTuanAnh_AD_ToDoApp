@@ -77,17 +77,6 @@ class TaskActivity : AppCompatActivity() {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun delete() {
-        val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
-        val database = FirebaseDatabase.getInstance()
-
-        val removeTask = database.getReference("$author/task/$itemClicked")
-
-        removeTask.removeValue()
-        toast("deleted $itemClicked")
-        getUserData()
-    }
-
     private fun DialogAdd() {
         val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
         val dialog = Dialog(this@TaskActivity)
@@ -135,20 +124,6 @@ class TaskActivity : AppCompatActivity() {
         calcelBtn.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
-
-    private fun done() {
-        val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
-        if(itemClicked == ""){
-            toast("select task to set status")
-        }
-        else{
-            val doneStatus = database.getReference("$author/task/$itemClicked/status")
-            doneStatus.setValue("done")
-            getUserData()
-            toast("done $itemClicked")
-        }
-    }
-
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private fun DialogModify() {
@@ -222,6 +197,30 @@ class TaskActivity : AppCompatActivity() {
 
             calcelBtn.setOnClickListener { dialog.dismiss() }
             dialog.show()
+        }
+    }
+
+    private fun delete() {
+        val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
+        val database = FirebaseDatabase.getInstance()
+
+        val removeTask = database.getReference("$author/task/$itemClicked")
+
+        removeTask.removeValue()
+        toast("deleted $itemClicked")
+        getUserData()
+    }
+
+    private fun done() {
+        val author = FirebaseUtils.firebaseAuth.currentUser?.displayName
+        if(itemClicked == ""){
+            toast("select task to set status")
+        }
+        else{
+            val doneStatus = database.getReference("$author/task/$itemClicked/status")
+            doneStatus.setValue("done")
+            getUserData()
+            toast("done $itemClicked")
         }
     }
 
